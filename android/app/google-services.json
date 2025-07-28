@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1073231560952",
+    "project_id": "medi-alert-f1b55",
+    "storage_bucket": "medi-alert-f1b55.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073231560952:android:5f151d418d299a98b73b0d",
+        "android_client_info": {
+          "package_name": "com.shahnewaz.medi_alert"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIh6cZv5R_izgDSKDkT-DWbtMXHm_6viQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
