@@ -1,136 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:medi_alert/screens/home_screen.dart';
-import 'package:provider/provider.dart';
-import '../services/auth_service.dart';
+import '../app_theme.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final email = TextEditingController();
+  final pass  = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthService>(context);
-
     return Scaffold(
       body: Container(
-        width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF0D47A1), Color(0xFF42A5F5)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            colors: [AppTheme.primaryDark, AppTheme.primaryLight],
+            begin: Alignment.topCenter, end: Alignment.bottomCenter,
           ),
         ),
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 8,
+              elevation: 8, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.medical_services,
-                        size: 80, color: Color(0xFF0D47A1)),
+                    const Icon(Icons.medical_services, size: 80, color: AppTheme.primaryDark),
                     const SizedBox(height: 16),
-                    const Text(
-                      'MediAlert Login',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF0D47A1),
-                      ),
-                    ),
+                    const Text('MediAlert Login', style: TextStyle(fontSize:24, fontWeight: FontWeight.bold, color: AppTheme.primaryDark)),
                     const SizedBox(height: 20),
-
-                    // Email
                     TextField(
-                      controller: emailController,
+                      controller: email,
                       decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        prefixIcon: const Icon(Icons.email),
                         labelText: 'Email',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        prefixIcon: const Icon(Icons.email),
+                        filled: true, fillColor: Colors.grey[100],
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                     ),
                     const SizedBox(height: 12),
-
-                    // Password
                     TextField(
-                      controller: passwordController,
-                      obscureText: true,
+                      controller: pass, obscureText: true,
                       decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.grey[100],
-                        prefixIcon: const Icon(Icons.lock),
                         labelText: 'Password',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                        prefixIcon: const Icon(Icons.lock),
+                        filled: true, fillColor: Colors.grey[100],
+                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                     ),
                     const SizedBox(height: 20),
-
-                    // Login button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.primaryDark,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          backgroundColor: const Color(0xFF0D47A1),
                         ),
-                        // onPressed: () async {
-                        //   await auth.signIn(
-                        //     emailController.text.trim(),
-                        //     passwordController.text.trim(),
-                        //   );
-                        // },
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const HomeScreen()),
-                          );
+                          // UI-only: pretend login then go home
+                          Navigator.pushReplacementNamed(context, '/');
                         },
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(fontSize: 16, color: Colors.white),
-                        ),
+                        child: const Text('Login', style: TextStyle(color: Colors.white)),
                       ),
                     ),
-                    const SizedBox(height: 10),
-
-                    // Register button
                     TextButton(
-                      onPressed: () async {
-                        await auth.register(
-                          emailController.text.trim(),
-                          passwordController.text.trim(),
-                        );
-                      },
-                      child: const Text(
-                        'Create New Account',
-                        style: TextStyle(
-                          color: Color(0xFF0D47A1),
-                          fontWeight: FontWeight.bold,
-                        ),
+                      onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Registration UI only in this sprint')),
                       ),
+                      child: const Text('Create New Account', style: TextStyle(color: AppTheme.primaryDark, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
