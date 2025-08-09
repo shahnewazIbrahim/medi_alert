@@ -21,34 +21,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    requestNotificationPermission();
+    // requestNotificationPermission();
   }
 
-  Future<void> requestNotificationPermission() async {
-    if (await Permission.notification.isDenied) {
-      await Permission.notification.request();
-    }
-  }
+  // Future<void> requestNotificationPermission() async {
+  //   if (await Permission.notification.isDenied) {
+  //     await Permission.notification.request();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthService>(context);
-    reminderService = ReminderService(userId: auth.userId!);
+    // final auth = Provider.of<AuthService>(context);
+    // reminderService = ReminderService(userId: auth.userId!);
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("Today's Medicine", style: TextStyle(color: Colors.white)),
-      //   flexibleSpace: Container(
-      //     decoration: const BoxDecoration(
-      //       gradient: LinearGradient(
-      //         colors: [Color(0xFF0D47A1), Color(0xFF42A5F5)],
-      //         begin: Alignment.topCenter,
-      //         end: Alignment.bottomCenter,
-      //       ),
-      //     ),
-      //   ),
-      //   elevation: 0,
-      // ),
       appBar: AppBar(
         title: const Text("Today's Medicine", style: TextStyle(color: Colors.white)),
         flexibleSpace: Container(
@@ -78,21 +65,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
 
-              if (shouldLogout == true) {
-                // context across async gap এ warning এড়াতে আগে navigator নিন
-                final navigator = Navigator.of(context);
-                // provider থেকে auth নিয়ে signOut
-                await context.read<AuthService>().signOut();
-
-                // যদি আপনার main.dart এ auth.currentUser null হলে LoginScreen দেখায়,
-                // তাহলে আলাদা করে navigate দরকার নেই। চাইলে snackbar দেখাতে পারেন:
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Logged out')),
-                );
-
-                // (ঐচ্ছিক) যদি আপনি রাউটিং দিয়ে LoginScreen-এ যেতে চান:
-                // navigator.pushNamedAndRemoveUntil('/login', (route) => false);
-              }
+              // if (shouldLogout == true) {
+              //   // context across async gap এ warning এড়াতে আগে navigator নিন
+              //   final navigator = Navigator.of(context);
+              //   // provider থেকে auth নিয়ে signOut
+              //   await context.read<AuthService>().signOut();
+              //
+              //   // যদি আপনার main.dart এ auth.currentUser null হলে LoginScreen দেখায়,
+              //   // তাহলে আলাদা করে navigate দরকার নেই। চাইলে snackbar দেখাতে পারেন:
+              //   ScaffoldMessenger.of(context).showSnackBar(
+              //     const SnackBar(content: Text('Logged out')),
+              //   );
+              //
+              //   // (ঐচ্ছিক) যদি আপনি রাউটিং দিয়ে LoginScreen-এ যেতে চান:
+              //   // navigator.pushNamedAndRemoveUntil('/login', (route) => false);
+              // }
             },
           ),
           IconButton(
@@ -114,17 +101,69 @@ class _HomeScreenState extends State<HomeScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: reminderService.getReminders(),
+        // child: StreamBuilder<QuerySnapshot>(
+        //   stream: reminderService.getReminders(),
+        //   builder: (context, snapshot) {
+        //     if (snapshot.hasError) {
+        //       return const Center(child: Text("Error loading reminders"));
+        //     }
+        //     if (!snapshot.hasData) {
+        //       return const Center(child: CircularProgressIndicator());
+        //     }
+        //
+        //     final reminders = snapshot.data!.docs;
+        //
+        //     if (reminders.isEmpty) {
+        //       return const Center(child: Text("No reminders yet"));
+        //     }
+        //
+        //     return ListView.builder(
+        //       padding: const EdgeInsets.only(top: kToolbarHeight + 20),
+        //       itemCount: reminders.length,
+        //       itemBuilder: (context, index) {
+        //         final doc = reminders[index];
+        //         final data = doc.data() as Map<String, dynamic>;
+        //         return Card(
+        //           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        //           child: ListTile(
+        //             leading: const Icon(Icons.medication_outlined, color: Colors.blue),
+        //             title: Text(data['name'] ?? 'No Name'),
+        //             subtitle: Text("${data['dose']} - ${data['time']}"),
+        //             trailing: IconButton(
+        //               icon: const Icon(Icons.delete, color: Colors.redAccent),
+        //               onPressed: () => reminderService.deleteReminder(doc.id),
+        //             ),
+        //           ),
+        //         );
+        //       },
+        //     );
+        //   },
+        // ),
+        child: StreamBuilder<List<Map<String, dynamic>>>(
+          // ekhane amra ekta static stream use korchi
+          stream: Stream.value([
+            {
+              'name': 'Paracetamol',
+              'dose': '500mg',
+              'time': '9:00 AM',
+            },
+            {
+              'name': 'Vitamin C',
+              'dose': '1000mg',
+              'time': '2:00 PM',
+            },
+            {
+              'name': 'Antibiotic',
+              'dose': '250mg',
+              'time': '8:00 PM',
+            },
+          ]),
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Center(child: Text("Error loading reminders"));
-            }
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final reminders = snapshot.data!.docs;
+            final reminders = snapshot.data!;
 
             if (reminders.isEmpty) {
               return const Center(child: Text("No reminders yet"));
@@ -134,8 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(top: kToolbarHeight + 20),
               itemCount: reminders.length,
               itemBuilder: (context, index) {
-                final doc = reminders[index];
-                final data = doc.data() as Map<String, dynamic>;
+                final data = reminders[index];
                 return Card(
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ListTile(
@@ -144,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     subtitle: Text("${data['dose']} - ${data['time']}"),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.redAccent),
-                      onPressed: () => reminderService.deleteReminder(doc.id),
+                      onPressed: () {}, // demo te delete dorkar nei
                     ),
                   ),
                 );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medi_alert/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 
@@ -95,10 +96,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           backgroundColor: const Color(0xFF0D47A1),
                         ),
-                        onPressed: () async {
-                          await auth.signIn(
-                            emailController.text.trim(),
-                            passwordController.text.trim(),
+                        // onPressed: () async {
+                        //   await auth.signIn(
+                        //     emailController.text.trim(),
+                        //     passwordController.text.trim(),
+                        //   );
+                        // },
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const HomeScreen()),
                           );
                         },
                         child: const Text(
