@@ -6,6 +6,8 @@ import '../services/reminder_service.dart';
 import '../services/notification_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'history_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -34,6 +36,19 @@ class _HomeScreenState extends State<HomeScreen> {
     reminderService = ReminderService(userId: auth.userId!);
 
     return Scaffold(
+      // appBar: AppBar(
+      //   title: const Text("Today's Medicine", style: TextStyle(color: Colors.white)),
+      //   flexibleSpace: Container(
+      //     decoration: const BoxDecoration(
+      //       gradient: LinearGradient(
+      //         colors: [Color(0xFF0D47A1), Color(0xFF42A5F5)],
+      //         begin: Alignment.topCenter,
+      //         end: Alignment.bottomCenter,
+      //       ),
+      //     ),
+      //   ),
+      //   elevation: 0,
+      // ),
       appBar: AppBar(
         title: const Text("Today's Medicine", style: TextStyle(color: Colors.white)),
         flexibleSpace: Container(
@@ -46,6 +61,50 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         elevation: 0,
+        actions: [
+          IconButton(
+            tooltip: 'Logout',
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: () async {
+              final shouldLogout = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text('Confirm Logout'),
+                  content: const Text('Are you sure you want to logout?'),
+                  actions: [
+                    TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: const Text('Cancel')),
+                    ElevatedButton(onPressed: () => Navigator.of(ctx).pop(true), child: const Text('Logout')),
+                  ],
+                ),
+              );
+
+              if (shouldLogout == true) {
+                // context across async gap এ warning এড়াতে আগে navigator নিন
+                final navigator = Navigator.of(context);
+                // provider থেকে auth নিয়ে signOut
+                await context.read<AuthService>().signOut();
+
+                // যদি আপনার main.dart এ auth.currentUser null হলে LoginScreen দেখায়,
+                // তাহলে আলাদা করে navigate দরকার নেই। চাইলে snackbar দেখাতে পারেন:
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Logged out')),
+                );
+
+                // (ঐচ্ছিক) যদি আপনি রাউটিং দিয়ে LoginScreen-এ যেতে চান:
+                // navigator.pushNamedAndRemoveUntil('/login', (route) => false);
+              }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.history, color: Colors.white),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HistoryScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(

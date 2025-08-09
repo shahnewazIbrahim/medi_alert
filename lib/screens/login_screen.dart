@@ -18,27 +18,118 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = Provider.of<AuthService>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(controller: emailController, decoration: const InputDecoration(labelText: 'Email')),
-            TextField(controller: passwordController, decoration: const InputDecoration(labelText: 'Password'), obscureText: true),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await auth.signIn(emailController.text, passwordController.text);
-              },
-              child: const Text('Login'),
+      body: Container(
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF0D47A1), Color(0xFF42A5F5)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              elevation: 8,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.medical_services,
+                        size: 80, color: Color(0xFF0D47A1)),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'MediAlert Login',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0D47A1),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Email
+                    TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[100],
+                        prefixIcon: const Icon(Icons.email),
+                        labelText: 'Email',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
+                    // Password
+                    TextField(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.grey[100],
+                        prefixIcon: const Icon(Icons.lock),
+                        labelText: 'Password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Login button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          backgroundColor: const Color(0xFF0D47A1),
+                        ),
+                        onPressed: () async {
+                          await auth.signIn(
+                            emailController.text.trim(),
+                            passwordController.text.trim(),
+                          );
+                        },
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(fontSize: 16, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Register button
+                    TextButton(
+                      onPressed: () async {
+                        await auth.register(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        );
+                      },
+                      child: const Text(
+                        'Create New Account',
+                        style: TextStyle(
+                          color: Color(0xFF0D47A1),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: () async {
-                await auth.register(emailController.text, passwordController.text);
-              },
-              child: const Text('Register'),
-            ),
-          ],
+          ),
         ),
       ),
     );
