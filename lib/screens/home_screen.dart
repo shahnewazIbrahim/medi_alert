@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             return ListView.builder(
-              padding: const EdgeInsets.only(top: kToolbarHeight + 20),
+              padding: const EdgeInsets.only(top:  20),
               itemCount: reminders.length,
               itemBuilder: (context, index) {
                 final doc = reminders[index];
@@ -139,57 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
-        // child: StreamBuilder<List<Map<String, dynamic>>>(
-        //   // ekhane amra ekta static stream use korchi
-        //   stream: Stream.value([
-        //     {
-        //       'name': 'Paracetamol',
-        //       'dose': '500mg',
-        //       'time': '9:00 AM',
-        //     },
-        //     {
-        //       'name': 'Vitamin C',
-        //       'dose': '1000mg',
-        //       'time': '2:00 PM',
-        //     },
-        //     {
-        //       'name': 'Antibiotic',
-        //       'dose': '250mg',
-        //       'time': '8:00 PM',
-        //     },
-        //   ]),
-        //   builder: (context, snapshot) {
-        //     if (!snapshot.hasData) {
-        //       return const Center(child: CircularProgressIndicator());
-        //     }
-        //
-        //     final reminders = snapshot.data!;
-        //
-        //     if (reminders.isEmpty) {
-        //       return const Center(child: Text("No reminders yet"));
-        //     }
-        //
-        //     return ListView.builder(
-        //       padding: const EdgeInsets.only(top: kToolbarHeight + 20),
-        //       itemCount: reminders.length,
-        //       itemBuilder: (context, index) {
-        //         final data = reminders[index];
-        //         return Card(
-        //           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        //           child: ListTile(
-        //             leading: const Icon(Icons.medication_outlined, color: Colors.blue),
-        //             title: Text(data['name'] ?? 'No Name'),
-        //             subtitle: Text("${data['dose']} - ${data['time']}"),
-        //             trailing: IconButton(
-        //               icon: const Icon(Icons.delete, color: Colors.redAccent),
-        //               onPressed: () {}, // demo te delete dorkar nei
-        //             ),
-        //           ),
-        //         );
-        //       },
-        //     );
-        //   },
-        // ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
