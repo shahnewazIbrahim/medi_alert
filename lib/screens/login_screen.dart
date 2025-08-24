@@ -96,18 +96,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           backgroundColor: const Color(0xFF0D47A1),
                         ),
-                        // onPressed: () async {
-                        //   await auth.signIn(
-                        //     emailController.text.trim(),
-                        //     passwordController.text.trim(),
-                        //   );
-                        // },
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const HomeScreen()),
+                        onPressed: () async {
+                          await auth.signIn(
+                            emailController.text.trim(),
+                            passwordController.text.trim(),
                           );
                         },
+                        // onPressed: () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(builder: (_) => const HomeScreen()),
+                        //   );
+                        // },
                         child: const Text(
                           'Login',
                           style: TextStyle(fontSize: 16, color: Colors.white),
